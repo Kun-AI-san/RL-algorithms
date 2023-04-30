@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov  1 13:05:52 2022
+Created on Tue Nov  1 13:29:51 2022
 
 @author: Karthik Vemireddy
-UID: u7348473
+
 """
 
 import gym
@@ -19,7 +19,7 @@ def epsilon_greedy_pol(env, observation, Q, epsilon=0.1):
         return np.argmax(Q[observation])
     
 # create cliffwalking environment
-env = gym.make('CliffWalking-v0')
+env = gym.make('Taxi-v3')
 
 # create a new instance of cliffwalking, and get the initial state
 Q = np.zeros((env.observation_space.n, env.action_space.n))
@@ -27,7 +27,7 @@ num_steps = 0
 
 epsilon = 0.1
 #Train the agent
-for j in range(1, 601):
+for j in range(1, 3001):
     state = env.reset()
     print(f"Episode: {j}")
     observation=state[0]
@@ -43,9 +43,9 @@ for j in range(1, 601):
         observation = observation_1
         if terminated:
             break
-
+        
 #Test the agent
-env = gym.make('CliffWalking-v0', render_mode='human')
+env = gym.make('Taxi-v3', render_mode='human')
 state = env.reset()
 score = 0
 while True:
@@ -56,6 +56,8 @@ while True:
     # perform this action on the environment
     observation_1, reward, terminated, _, info = env.step(action)
     print(observation, action)
+    if observation==observation_1:
+        observation=state[0]
     observation = observation_1
     num_steps += 1
     score += reward
